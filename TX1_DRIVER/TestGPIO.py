@@ -1,4 +1,5 @@
-import JETSON_GPIO as Jet
+import JETSON_GPIO as jet
+import time
 
 inputPin = 0
 outputPin = 1
@@ -9,10 +10,14 @@ on = 1
 
 
 gpio36 = jet.JETSON_GPIO(36)
+gpio36.gpioUnexport()
+time.sleep(.100)
 gpio36.gpioExport()
 gpio36.gpioSetDirection(outputPin)
 
-gpio36.gpioSetValue(on)
-
 while (True):
-	pass
+	gpio36.gpioSetValue(on)
+	time.sleep(.500)
+	gpio36.gpioSetValue(off)
+	time.sleep(.500)
+

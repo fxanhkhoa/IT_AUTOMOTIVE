@@ -12,15 +12,15 @@ class JETSON_GPIO:
     SYSFS_GPIO_DIR = '/sys/class/gpio'
 
     def __init__(self, jetsonGPIO):
-        self.jetsonGPIO = jetsonGPIO
+        self.jetsonGPIO = str(jetsonGPIO)
         
 
     # gpioExport
     # Export the given gpio to userspace;
     # Return: Success = 0 ; otherwise open file error
     def gpioExport ( self ):
-        f = open(SYSFS_GPIO_DIR + "/export", "w")
-        f.write(self.jetsonGPIO)
+        f = open(self.SYSFS_GPIO_DIR + "/export", "w")
+        f.write(str(self.jetsonGPIO))
         f.close()
         return
     
@@ -29,8 +29,8 @@ class JETSON_GPIO:
     # Unexport the given gpio from userspace
     # Return: Success = 0 ; otherwise open file error
     def  gpioUnexport ( self ):
-        f = open(SYSFS_GPIO_DIR + "/unexport", "w")
-        f.write(self.jetsonGPIO)
+        f = open(self.SYSFS_GPIO_DIR + "/unexport", "w")
+        f.write(str(self.jetsonGPIO))
         f.close()
         return
 
@@ -38,7 +38,7 @@ class JETSON_GPIO:
     # Set the direction of the GPIO pin 
     # Return: Success = 0 ; otherwise open file error
     def gpioSetDirection (self, out_flag):
-        f = open(SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/direction", "w")
+        f = open(self.SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/direction", "w")
         if (out_flag == 1):
             f.write('out')
         else:
@@ -50,7 +50,7 @@ class JETSON_GPIO:
     # Set the value of the GPIO pin to 1 or 0
     # Return: Success = 0 ; otherwise open file error
     def gpioSetValue( self, value):
-        f = open(SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/value", "w")
+        f = open(self.SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/value", "w")
         if (value == 1):
             f.write('1')
         else:
@@ -62,7 +62,7 @@ class JETSON_GPIO:
     # Get the value of the requested GPIO pin ; value return is 0 or 1
     # Return: Success = 0 ; otherwise open file error
     def gpioGetValue( self ):
-        f = open(SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/value", "r")
+        f = open(self.SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/value", "r")
         return f.read()
     
     # gpioSetEdge
@@ -70,8 +70,8 @@ class JETSON_GPIO:
     # Valid edges: 'none' 'rising' 'falling' 'both'
     # Return: Success = 0 ; otherwise open file error
     def gpioSetEdge( self, edge):
-        f = open(SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/edge", "w")
-        f.write(edge)
+        f = open(self.SYSFS_GPIO_DIR + "/gpio" + self.jetsonGPIO + "/edge", "w")
+        f.write(str(edge))
         f.close()
         return
     
