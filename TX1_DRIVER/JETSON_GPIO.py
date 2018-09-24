@@ -34,8 +34,10 @@ def  gpioUnexport ( jetsonGPIO ):
 # Return: Success = 0 ; otherwise open file error
 def gpioSetDirection (jetsonGPIO, out_flag):
     f = open(SYSFS_GPIO_DIR + "/gpio" + jetsonGPIO + "/direction", "w")
-    if (out_flag):
+    if (out_flag == 1):
         f.write('out')
     else:
         f.write('in')
     f.close()
+
+def 
