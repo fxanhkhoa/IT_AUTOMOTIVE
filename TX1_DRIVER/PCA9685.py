@@ -115,6 +115,10 @@ class PCA9685:
         self.bus.write_byte_data(self.kI2Caddress, PCA9685_MODE2, PCA9685_OUTDRV)
         time.sleep(.5)
         return
+    
+    def close(self):
+        self.bus.close()
+        return
         
     def setPWMFrequency(self, frequency):
         print("Setting PCA9685 PWM frequency to", frequency, "Hz\n")
