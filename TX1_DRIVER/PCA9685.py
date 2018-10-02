@@ -111,39 +111,40 @@ class PCA9685:
         self.bus._set_address(self.kI2Caddress)
         
     def reset(self):
-        self.bus.write_byte_data(PCA9685_MODE1, 0, PCA9685_ALLCALL)
-        self.bus.write_byte_data(PCA9685_MODE2, 0, PCA9685_OUTDRV)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_MODE1, PCA9685_ALLCALL)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_MODE2, PCA9685_OUTDRV)
         time.sleep(.5)
         return
-    
+        
     def setPWMFrequency(self, frequency):
-        print("Setting PCA9685 PWM frequency to %f Hz\n",frequency)
+        print("Setting PCA9685 PWM frequency to", frequency, "Hz\n")
         rangedFrequency = min(max(frequency, 40), 1000)
-        prescale = (float)(25000000.0 / (4096 * rangedFrequency) - 0.5)
-        oldMode = self.bus.read_byte_data(PCA9685_MODE1, 0)
+        prescale = (int)(25000000.0 / (4096 * rangedFrequency) - 0.5)
+        print(prescale)
+        oldMode = self.bus.read_byte_data(self.kI2Caddress, PCA9685_MODE1, 0)
         newMode = ( oldMode & 0x7F ) | PCA9685_SLEEP
         
-        self.bus.write_byte_data(PCA9685_MODE1, 0, newMode) ;
-        self.bus.write_byte_data(PCA9685_PRE_SCALE, 0, prescale) ;
-        self.bus.write_byte_data(PCA9685_MODE1, 0, oldMode) ;
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_MODE1, newMode)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_PRE_SCALE, prescale)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_MODE1, oldMode)
         # Wait for oscillator to stabilize
-        time.sleep(.5) ;
-        self.bus.write_byte_data(PCA9685_MODE1, 0, oldMode | PCA9685_RESTART) ;
-        return 
+        time.sleep(.5)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_MODE1, oldMode | PCA9685_RESTART)
+        return
     
     # Channels 0-15
     # Channels are in sets of 4 bytes
     def setPWM(self, channel, onValue, offValue):
-        self.bus.write_byte_data(PCA9685_LED0_ON_L+4*channel, 0, onValue & 0xFF) 
-        self.bus.write_byte_data(PCA9685_LED0_ON_H+4*channel, 0, onValue >> 8) 
-        self.bus.write_byte_data(PCA9685_LED0_OFF_L+4*channel, 0, offValue & 0xFF) 
-        self.bus.write_byte_data(PCA9685_LED0_OFF_H+4*channel, 0, offValue >> 8) 
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_ON_L+4*channel, onValue & 0xFF)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_ON_H+4*channel, onValue >> 8)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_OFF_L+4*channel, offValue & 0xFF)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_OFF_H+4*channel, offValue >> 8)
         return 
     
     def setAllPWM(self, onValue, offValue):
-        self.bus.write_byte_data(PCA9685_ALL_LED_ON_L, 0, onValue & 0xFF) 
-        self.bus.write_byte_data(PCA9685_ALL_LED_ON_H, 0, onValue >> 8) 
-        self.bus.write_byte_data(PCA9685_ALL_LED_OFF_L, 0, offValue & 0xFF) 
-        self.bus.write_byte_data(PCA9685_ALL_LED_OFF_H, 0, offValue >> 8) 
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_ALL_LED_ON_L, onValue & 0xFF)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_ALL_LED_ON_H, onValue >> 8)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_ALL_LED_OFF_L, offValue & 0xFF)
+        self.bus.write_byte_data(self.kI2Caddress, PCA9685_ALL_LED_OFF_H, offValue >> 8)
         return
     
