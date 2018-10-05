@@ -15,10 +15,12 @@ servoMax = 720 / 2
 pca9865 = pca.PCA9685()
 #pca9865.setAllPWM(0,0)
 pca9865.reset()
-pca9865.setPWMFrequency(60)
+#pca9865.setPWMFrequency(60)
+pca9865.close()
 while (True):
-	pca9865.setPWM(STEERING_CHANNEL, 0, 250)
-	pca9865.setPWM(MOTOR_LEFT_IN1, 0, 0)
-	pca9865.setPWM(MOTOR_LEFT_IN2, 0, 250)
+	pass
+	#pca9865.setPWM(STEERING_CHANNEL, 0, 500)
+	#pca9865.setPWM(MOTOR_LEFT_IN1, 0, 0)
+	#pca9865.setPWM(MOTOR_LEFT_IN2, 0, 0)
 
 
