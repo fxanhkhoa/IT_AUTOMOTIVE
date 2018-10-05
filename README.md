@@ -1,4 +1,5 @@
 # IT_AUTOMOTIVE
+-----
 ## Before use, install these
 * Install I2C DEV for Python
 https://pypi.org/project/i2cdev/
@@ -24,18 +25,25 @@ https://github.com/peterlee0127/tensorflow-nvJetson
 
 ## schematics and PCBs in project
 * Shield for Nvidia Jetson TX1
-  [x] 3 Leds (GPIO)
-  [x] 4 buttons (GPIO)
-  [x] I2C for MPU6050 and PCA9685
-  [ ] SPI
+  - [x] 3 Leds (GPIO)
+  
+  - [x] 4 buttons (GPIO)
+  
+  - [x] I2C for MPU6050 and PCA9685
+  
+  - [ ] SPI
   
 * Shiled for Nvidia Jetson TK1
-  [x] 4 buttons (GPIO)
-  [x] I2C for MPU6050 and PCA9685
+  - [x] 4 buttons (GPIO)
+  
+  - [x] I2C for MPU6050 and PCA9685
   
 ## Tensorflow and Machine learning
 * Traffic sign recognization
-  [x] Turn left
-  [x] Turn right
-  [ ] Stop
-  [ ] Park
+  - [x] Turn left
+  
+  - [x] Turn right
+  
+  - [ ] Stop
+  
+  - [ ] Park
