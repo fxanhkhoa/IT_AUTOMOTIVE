@@ -12,11 +12,15 @@ https://github.com/peterlee0127/tensorflow-nvJetson
 * Working on Jetson TX1 with CUDA and Tensorflow
 
 ## Libraries in project
-[x] GPIO library in Python
-[x] I2C library in Python
-[x] PCA9685 library
-[ ] SPI library 
-[ ] Pwm library
+- [x] GPIO library in Python
+
+- [x] I2C library in Python
+
+- [x] PCA9685 library
+
+- [ ] SPI library
+
+- [ ] Pwm library
 
 ## schematics and PCBs in project
 * Shield for Nvidia Jetson TX1
