@@ -138,7 +138,9 @@ class PCA9685:
     
     # Channels 0-15
     # Channels are in sets of 4 bytes
-    def setPWM(self, channel, onValue, offValue):
+    def setPWM(self, channel, onValue=0, offValue=250):
+        onValue = (int)(onValue)
+        offValue = (int)(offValue)
         self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_ON_L+4*channel, onValue & 0xFF)
         self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_ON_H+4*channel, onValue >> 8)
         self.bus.write_byte_data(self.kI2Caddress, PCA9685_LED0_OFF_L+4*channel, offValue & 0xFF)
