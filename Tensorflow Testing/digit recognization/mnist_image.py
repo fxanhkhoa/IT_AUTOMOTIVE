@@ -6,17 +6,17 @@
 
 # TensorFlow and tf.keras
 import tensorflow as tf
-from keras.datasets import mnist
+from tensorflow.keras.datasets import mnist
 from tensorflow import keras
 from skimage.feature import hog
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Dropout
-from keras.layers import Flatten
-from keras.layers.convolutional import Conv2D
-from keras.layers.convolutional import MaxPooling2D
-from keras.models import model_from_json
-from keras.utils import np_utils
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers.convolutional import Conv2D
+from tensorflow.keras.layers.convolutional import MaxPooling2D
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.utils import np_utils
 
 from skimage.feature import hog
 import cv2

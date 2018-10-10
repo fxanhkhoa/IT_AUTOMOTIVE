@@ -7,6 +7,8 @@ https://pypi.org/project/i2cdev/
 https://pypi.org/project/smbus2/
 * Install tensorflow for Nvidia Jetson TX1 and Nvida Jetson TK1
 https://github.com/peterlee0127/tensorflow-nvJetson
+* Install Openni for Python and Camera test is in Example and Tutorial
+https://pypi.org/project/openni/
 
 ## About project
 * Simulation of Automatic car
