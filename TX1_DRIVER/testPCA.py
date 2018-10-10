@@ -8,13 +8,14 @@ MOTOR_LEFT_IN1  = 4
 MOTOR_LEFT_IN2  = 5
 MOTOR_RIGHT_IN1  = 6
 MOTOR_RIGHT_IN2  = 7
-# toi max 480
-# toi min 345
+# toi 363 min -> 420
+# neutral 332
+# lui 309 min -> 270 max
 PWM_FULL_REVERSE = 332 # 1ms/20ms * 4096
 PWM_NEUTRAL = 307      # 1.5ms/20ms * 4096
 PWM_FULL_FORWARD = 480 # 2ms/20ms * 4096
 
-value = 10
+value = 420
 
 servoMin = 120 * 2 
 servoMax = 720 / 2
@@ -31,7 +32,7 @@ while (True):
 	#pass
 	pca9865.setPWM(0, 0, value)
 	time.sleep(.2)
-	value = value - 1
+	#value = value - 1
 	print('pwm', value)
 	#pca9865.setPWM(0, 0, 500)
 	#time.sleep(.8)

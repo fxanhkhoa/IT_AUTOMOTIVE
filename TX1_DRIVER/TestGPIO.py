@@ -79,8 +79,8 @@ while (True):
 		value2 = (int)(btn2.gpioGetValue())
 		value3 = (int)(btn3.gpioGetValue())
 		value4 = (int)(btn4.gpioGetValue())
-		#print('3 -> ',btn3.gpioGetValue())
-		print('4 -> ',btn4.gpioGetValue())
+		print('3 -> ',btn3.gpioGetValue())
+		#print('4 -> ',btn4.gpioGetValue())
 		if (value1 == 1):
 			led1.gpioSetValue(off)
 		else:
@@ -91,15 +91,15 @@ while (True):
 		else:
 			led2.gpioSetValue(on)
 			
-		#if (value3 == 1):
-		#	led3.gpioSetValue(off)
-		#else:
-		#	led3.gpioSetValue(on)
-			
-		if (value4 == 1):
+		if (value3 == 1):
 			led3.gpioSetValue(off)
 		else:
 			led3.gpioSetValue(on)
+			
+		#if (value4 == 1):
+		#	led3.gpioSetValue(off)
+		#else:
+		#	led3.gpioSetValue(on)
 			
 	except KeyboardInterrupt:
 		#led1.gpioUnexport()
