@@ -7,7 +7,7 @@
 # TensorFlow and tf.keras
 import tensorflow as tf
 from tensorflow import keras
-from skimage.feature import hog
+#from skimage.feature import hog
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
@@ -61,15 +61,17 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 cap = cv2.VideoCapture(0)
 
 while True:
-    ret, im = cap.read()
+    #ret, im = cap.read()
+    ret, im = cap.retrieve(cv2.CAP_OPENNI_BGR_IMAGE)
+    ret, im_gray = cap.retrieve(cv2.CAP_OPENNI_GRAY_IMAGE)
     # Convert to grayscale and apply Gaussian filtering
-    im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+    #im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
     im_gray = cv2.GaussianBlur(im_gray, (5, 5), 0)        
     # Threshold the image
     ret, im_th = cv2.threshold(im_gray, 120, 255, cv2.THRESH_BINARY_INV)
 
     # Find contours in the image
-    ima, ctrs, hier = cv2.findContours(im_th.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    ima, ctrs, hier = cv2.findContours(im_th, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(im, ctrs, -1, (173,213,0), 3)
     
     if len(ctrs) > 0:
