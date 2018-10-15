@@ -9,6 +9,8 @@ https://pypi.org/project/smbus2/
 https://github.com/peterlee0127/tensorflow-nvJetson
 * Install Openni for Python and Camera test is in Example and Tutorial
 https://pypi.org/project/openni/
+* Openni2 with python
+https://github.com/elmonkey/Python_OpenNI2
 
 ## About project
 * Simulation of Automatic car
