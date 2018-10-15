@@ -1,5 +1,6 @@
 import JETSON_GPIO as jet
 import PCA9685 as pca
+import time
 from termcolor import colored
 
 ######## PCA9685 ########
@@ -9,15 +10,15 @@ MOTOR_CHANNEL = 1
 # toi 363 min -> 420
 # neutral 332
 # lui 309 min -> 270 max
-MAX_FORWARD = 420
-MIN_FORWARD = 363
-FORWARD = 57
+MAX_FORWARD = 442
+MIN_FORWARD = 412
+FORWARD = 30
 
-NEUTRAL = 332
+NEUTRAL = 400
 
-MAX_REVERSE = 270
-MIN_REVERSE = 309
-REVERSE = 39
+MAX_REVERSE = 370
+MIN_REVERSE = 330
+REVERSE = 40
 
 ####### GPIO ########
 inputPin = 0
@@ -75,6 +76,9 @@ class DRIVER:
 		self.btn_mode.gpioSetDirection(inputPin)
 		self.btn_speed_plus.gpioSetDirection(inputPin)
 		self.btn_speed_minus.gpioSetDirection(inputPin)
+		
+		#Open motor
+		self.openMotor()
 		
 		print(colored('INIT ALL DONE', 'blue'))
 				
@@ -248,17 +252,20 @@ class DRIVER:
 			percentage = (int)((angle * 100) / 45)
 			value = (int)((85 * percentage) / 100)
 			self.pca9865.setPWM(STEERING_CHANNEL, 0, middle - value)
-			print(colored(middle - value, 'red'))
+			#print(colored(middle - value, 'red'))
 		elif (angle < 0): #left
 			angle = -angle
 			# calculate percentage
 			percentage = (int)((angle * 100) / 45)
 			value = (int)((100 * percentage) / 100)
 			self.pca9865.setPWM(STEERING_CHANNEL, 0, value + middle)
-			print(colored(middle + value, 'red'))
+			#print(colored(middle + value, 'red'))
 		return
 	########### FOR MOTOR ###########
-	
+	def openMotor(self):
+		self.pca9865.setPWM(MOTOR_CHANNEL, 0, NEUTRAL)
+		time.sleep(1)
+		return
 	def setSpeed(self, speed):
 		if speed > 100:
 			speed = 100
@@ -266,11 +273,13 @@ class DRIVER:
 			speed = -100
 		if speed > 0:
 			#calculate value
-			value = (int)((FORWARD * 100) * speed)
+			value = (int)((FORWARD * speed) / 100)
 			self.pca9865.setPWM(MOTOR_CHANNEL, 0, value + MIN_FORWARD)
+			print(colored(value + MIN_FORWARD, 'red'))
 		elif speed < 0:
 			#calculate value
-			value = - value
-			value = (int)((FORWARD * 100) * speed)
-			self.pca9865.setPWM(MOTOR_CHANNEL, 0, MIN_REVERSE - value)
+			speed = -speed
+			value = (int)((REVERSE * speed) / 100)
+			self.pca9865.setPWM(MOTOR_CHANNEL, 0, MAX_REVERSE - value)
+			print(colored(MIN_REVERSE - value, 'red'))
 			

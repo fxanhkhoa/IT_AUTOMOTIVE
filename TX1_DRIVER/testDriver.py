@@ -21,3 +21,6 @@ while True:
 	time.sleep(1)
 	driver.setAngle(-30)
 	time.sleep(1)
+	driver.setSpeed(80)
+	time.sleep(3)
+	#driver.setSpeed(80)
