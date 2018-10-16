@@ -87,7 +87,7 @@ class DRIVER:
 	def resetLed1(self):
 		try:
 			self.led1.gpioUnexport()
-			print(cologreen('led1 unexported', 'red'))
+			print(colored('led1 unexported', 'red'))
 		except:
 			pass
 		return
@@ -95,7 +95,7 @@ class DRIVER:
 	def resetLed2(self):
 		try:
 			self.led2.gpioUnexport()
-			print('led2 unexported')
+			print(colored('led2 unexported', 'red'))
 		except:
 			pass
 		return
@@ -103,7 +103,7 @@ class DRIVER:
 	def resetLed3(self):
 		try:
 			self.led3.gpioUnexport()
-			print('led3 unexported')
+			print(colored('led3 unexported', 'red'))
 		except:
 			pass
 		return
@@ -120,7 +120,7 @@ class DRIVER:
 	def openLed2(self):
 		try:
 			self.led2.gpioExport()
-			print('led2 Exported')
+			print(colored('led2 Exported', 'green'))
 		except:
 			pass
 		return
@@ -128,7 +128,7 @@ class DRIVER:
 	def openLed3(self):
 		try:
 			self.led3.gpioExport()
-			print('led3 Exported')
+			print(colored('led3 Exported', 'green'))
 		except:
 			pass
 		return
@@ -164,7 +164,7 @@ class DRIVER:
 	def resetButtonStartStop(self):
 		try:
 			self.btn_start_stop.gpioUnexport()
-			print('button start stop Unexported')
+			print(colored('button start stop Unexported', 'red'))
 		except:
 			pass
 		return
@@ -172,7 +172,7 @@ class DRIVER:
 	def resetButtonMode(self):
 		try:
 			self.btn_mode.gpioUnexport()
-			print('button mode Unexported')
+			print(colored('button mode Unexported', 'red'))
 		except:
 			pass
 		return
@@ -180,7 +180,7 @@ class DRIVER:
 	def resetButtonSpeedPlus(self):
 		try:
 			self.btn_speed_plus.gpioUnexport()
-			print('button speed plus Unexported')
+			print(colored('button speed plus Unexported', 'red'))
 		except:
 			pass
 		return
@@ -188,7 +188,7 @@ class DRIVER:
 	def resetButtonSpeedMinus(self):
 		try:
 			self.btn_speed_minus.gpioUnexport()
-			print('button speed minus Unexported')
+			print(colored('button speed minus Unexported', 'red'))
 		except:
 			pass
 		return
@@ -198,7 +198,7 @@ class DRIVER:
 	def openButtonStartStop(self):
 		try:
 			self.btn_start_stop.gpioExport()
-			print('button start stop Exported')
+			print(colored('button start stop Exported', 'green'))
 		except:
 			pass
 		return
@@ -206,7 +206,7 @@ class DRIVER:
 	def openButtonMode(self):
 		try:
 			self.btn_mode.gpioExport()
-			print('button mode Exported')
+			print(colored('button mode Exported', 'green'))
 		except:
 			pass
 		return
@@ -214,7 +214,7 @@ class DRIVER:
 	def openButtonSpeedPlus(self):
 		try:
 			self.btn_speed_plus.gpioExport()
-			print('button speed plus Exported')
+			print(colored('button speed plus Exported', 'green'))
 		except:
 			pass
 		return
@@ -222,7 +222,7 @@ class DRIVER:
 	def openButtonSpeedMinus(self):
 		try:
 			self.btn_speed_minus.gpioExport()
-			print('button speed minus Exported')
+			print(colored('button speed minus Exported', 'green'))
 		except:
 			pass
 		return
@@ -267,6 +267,8 @@ class DRIVER:
 		time.sleep(1)
 		return
 	def setSpeed(self, speed):
+		if speed == 0:
+			self.pca9865.setAllPWM(0, 0)
 		if speed > 100:
 			speed = 100
 		elif speed < -100:
