@@ -23,8 +23,36 @@ from keras.callbacks import LearningRateScheduler, ModelCheckpoint
 from keras import backend as K
 K.set_image_data_format('channels_first')
 
+NUM_CLASSES = 4
+IMG_SIZE = 48
 
-# In[2]:
+def cnn_model():
+    model = Sequential()
+
+    model.add(Conv2D(32, (3, 3), padding='same',
+                     input_shape=(3, IMG_SIZE, IMG_SIZE),
+                     activation='relu'))
+    model.add(Conv2D(32, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(64, (3, 3), padding='same',
+                     activation='relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(128, (3, 3), padding='same',
+                     activation='relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.2))
+
+    model.add(Flatten())
+    model.add(Dense(512, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(NUM_CLASSES, activation='softmax'))
+    return model
 
 def preprocess_img(img):
     # Histogram normalization in y
@@ -75,22 +103,36 @@ def getMask(img):
 
 
 def getLowerUpper():
-		#24,146,220
-		green = np.uint8([[[220, 146, 24]]]) #IN BGR
-		hsvGreen = cv2.cvtColor(green,cv2.COLOR_BGR2HSV)
-		print(hsvGreen)
-		lowerLimit = (hsvGreen[0][0][0]-10,100,100)
-		upperLimit = (hsvGreen[0][0][0]+10,255,255)
-		print(upperLimit)
-		print(lowerLimit)
+	#24,146,220
+	green = np.uint8([[[220, 146, 24]]]) #IN BGR
+	hsvGreen = cv2.cvtColor(green,cv2.COLOR_BGR2HSV)
+	print(hsvGreen)
+	lowerLimit = (hsvGreen[0][0][0]-10,100,100)
+	upperLimit = (hsvGreen[0][0][0]+10,255,255)
+	print(upperLimit)
+	print(lowerLimit)
 
+try:
+	with  h5py.File('model.h5') as hf: 
+		X, Y = hf['imgs'][:], hf['labels'][:]
+	print("Loaded images from X.h5")
+except:
+	pass
+	
+model = cnn_model()
+model.summary()
+model.load_weights('model.h5')
 
-# In[4]:
-
-
-im = cv2.imread('images/turn_left/002.jpg')
-path = os.getcwd() + '/images/turn_left_extracted' 
-getLowerUpper()
+# let's train the model using SGD + momentum (how original).
+lr = 0.01
+sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
+model.compile(loss='categorical_crossentropy',
+          optimizer=sgd,
+          metrics=['accuracy'])
+	
+im = cv2.imread('002.jpg')
+#path = os.getcwd() + '/images/turn_left_extracted' 
+#getLowerUpper()
 
 
 # In[7]:
@@ -100,19 +142,10 @@ im = cv2.resize(im, (768,1024))
 im_save = im.copy()
 im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 masked, im_gray1 = getMask(im_save)
-#plt.imshow(im)
-cv2.imshow('im',im_gray)
 
-ret, im_th = cv2.threshold(im_gray, 95, 255, cv2.THRESH_BINARY_INV)
-ret1, im_th1 = cv2.threshold(masked, 95, 255, cv2.THRESH_BINARY)
+ret, im_th = cv2.threshold(masked, 95, 255, cv2.THRESH_BINARY)
 
-cv2.imshow('th', im_th)
-cv2.imshow('th1', im_th1)
-
-#plt.imshow(im_gray)
-#plt.show()
-
-im_contours, contours, hierarchy = cv2.findContours(im_th1,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+im_contours, contours, hierarchy = cv2.findContours(im_th,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
 list_ellipse = []
 i = 0
@@ -121,7 +154,6 @@ if len(contours) > 0:
     for contour in contours:
         i = i + 1
         area = cv2.contourArea(contour)
-        #print(area)
         if area <= 50000:  # skip ellipses smaller than 10x10
             continue
         try:
@@ -143,12 +175,17 @@ if len(contours) > 0:
                 pt2 = int(rect[0] + rect[2] // 2 - leng // 2)
                 roi = im_save[pt1:pt1+leng, pt2:pt2+leng]
                 roi = cv2.dilate(roi, (3, 3))
-                #plt.imshow(roi)
-                #plt.show()
-                cv2.imshow('roi', roi)
-                #name_file = str(j) + '.jpg'
-                #cv2.imwrite(os.path.join(path , name_file), roi)
+                #cv2.imwrite('extracted.png',roi)
+                output_roi = preprocess_img(roi)
+                #cv2.imshow('roi', output_roi)
+                output_roi = np.array(output_roi)
+                output_roi = np.expand_dims(output_roi, axis=0)
+                #print(output_roi)
+                result = model.predict_classes(output_roi)
+                print(result)
+                # 0_stop, 1_right, 2_left
+                cv2.waitKey()
         except:
             pass
         
-cv2.waitKey()
+#cv2.waitKey()
