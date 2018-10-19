@@ -131,6 +131,7 @@ model.compile(loss='categorical_crossentropy',
           metrics=['accuracy'])
 	
 im = cv2.imread('002.jpg')
+#cv2.imshow('im',im)
 #path = os.getcwd() + '/images/turn_left_extracted' 
 #getLowerUpper()
 
@@ -138,7 +139,7 @@ im = cv2.imread('002.jpg')
 # In[7]:
 
 
-im = cv2.resize(im, (768,1024))
+im = cv2.resize(im, (640,480))
 im_save = im.copy()
 im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 masked, im_gray1 = getMask(im_save)
@@ -146,6 +147,7 @@ masked, im_gray1 = getMask(im_save)
 ret, im_th = cv2.threshold(masked, 95, 255, cv2.THRESH_BINARY)
 
 im_contours, contours, hierarchy = cv2.findContours(im_th,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+cv2.imshow('contour',im_contours)
 
 list_ellipse = []
 i = 0
@@ -154,9 +156,11 @@ if len(contours) > 0:
     for contour in contours:
         i = i + 1
         area = cv2.contourArea(contour)
-        if area <= 50000:  # skip ellipses smaller than 10x10
+        #print(i, ' ', area)
+        if area <= 5000:  # skip ellipses smaller than 10x10
             continue
         try:
+            print(i, ' ', area)
             ellipse = cv2.fitEllipse(contour)
             poly = cv2.ellipse2Poly((int(ellipse[0][0]), int(ellipse[0][1])), (int(ellipse[1][0] / 2), int(ellipse[1][1] / 2)), int(ellipse[2]), 0, 360, 5)
             # if contour has enough similarity to an ellipse
@@ -188,4 +192,4 @@ if len(contours) > 0:
         except:
             pass
         
-#cv2.waitKey()
+cv2.waitKey()
