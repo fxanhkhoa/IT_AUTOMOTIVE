@@ -11,6 +11,8 @@ https://github.com/peterlee0127/tensorflow-nvJetson
 https://pypi.org/project/openni/
 * Openni2 with python
 https://github.com/elmonkey/Python_OpenNI2
+* Install sklearn and skimage
+https://gist.github.com/xydrolase/977979968728c9eb0e48 (With python3 change python-* to python3-*)
 
 ## About project
 * Simulation of Automatic car
