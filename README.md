@@ -7,6 +7,10 @@ https://pypi.org/project/i2cdev/
 https://pypi.org/project/smbus2/
 * Install tensorflow for Nvidia Jetson TX1 and Nvida Jetson TK1
 https://github.com/peterlee0127/tensorflow-nvJetson
+* Install hp5y
+http://docs.h5py.org/en/latest/build.html
+* Install Keras
+https://www.hackster.io/wilson-wang/jetson-tx2-tensorflow-opencv-keras-install-b74e40
 * Install Openni for Python and Camera test is in Example and Tutorial
 https://pypi.org/project/openni/
 * Openni2 with python
