@@ -15,17 +15,24 @@ import os
 
 
 def getMask(img):
-		hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-		
-		# define range of blue color in HSV
-		lower_blue = np.array([82, 27, 6])
-		upper_blue = np.array([130, 255, 255])
-		
-		# Threshold the HSV image to get only blue colors
-		mask = cv2.inRange(hsv, lower_blue, upper_blue)
-		
-		#cv2.imshow('mask', mask)
-		return mask
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+    # define range of blue color in HSV
+    lower_blue = np.array([82, 27, 6])
+    upper_blue = np.array([130, 255, 255])
+
+    # Threshold the HSV image to get only blue colors
+    mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+    # Bitwise-AND mask and original image
+    res = cv2.bitwise_and(img ,img , mask= mask)
+    
+    rgb = cv2.cvtColor(res, cv2.COLOR_HSV2RGB)
+    #cv2.imshow('res',rgb)
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
+
+    #cv2.imshow('mask', mask)
+    return mask, gray
 
 
 # ## Function For Get Limit Of Color (In Opencv is BGR not RGB)
@@ -58,13 +65,21 @@ getLowerUpper()
 im = cv2.resize(im, (768,1024))
 im_save = im.copy()
 im_gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-masked = getMask(im_save)
+masked, im_gray1 = getMask(im_save)
 #plt.imshow(im)
-#cv2.imshow('im',masked)
+cv2.imshow('im',im_gray)
 
 ret, im_th = cv2.threshold(im_gray, 95, 255, cv2.THRESH_BINARY_INV)
+ret1, im_th1 = cv2.threshold(masked, 95, 255, cv2.THRESH_BINARY)
 
-im_contours, contours, hierarchy = cv2.findContours(im_th,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+cv2.imshow('th', im_th)
+cv2.imshow('th1', im_th1)
+
+#plt.imshow(im_gray)
+#plt.show()
+
+im_contours, contours, hierarchy = cv2.findContours(im_th1,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+
 list_ellipse = []
 i = 0
 j = 0
@@ -72,6 +87,7 @@ if len(contours) > 0:
     for contour in contours:
         i = i + 1
         area = cv2.contourArea(contour)
+        #print(area)
         if area <= 50000:  # skip ellipses smaller than 10x10
             continue
         try:
