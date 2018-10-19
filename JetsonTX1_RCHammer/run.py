@@ -29,6 +29,9 @@ def initialize():
 
 def main():
   print("Hello World!")
+  
+  running = 0
+  
   rgb_stream = initialize()
   devi = deviationRC.deviation()
   sign = detectSign.Sign()
@@ -36,20 +39,38 @@ def main():
   driver.turnOnLed1()
   driver.turnOffLed2()
   driver.turnOnLed3()
+  driver.setAngle(0)
+  
   
   cap = cv2.VideoCapture('/home/nvidia/Phuong/python/original.mp4')
   while True:
-	  # for openni
-	  bgr = np.fromstring(rgb_stream.read_frame().get_buffer_as_uint8(),dtype=np.uint8).reshape(480,640,3)
-	  img = cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB)
-	  #ret,img = cap.read()
-	  #img = cv2.resize(img, (640, 480))
-	  mask = sign.getMask(img)
-	  sign.getLowerUpper()
-	  angle = devi.GetDeviation(img)
-	  
-	  if cv2.waitKey(33)& 0xFF == ord('q'):
-		  break
+	  #print(driver.getValuebtnStartStop())
+	  if (driver.getValuebtnStartStop() == 1):
+		  
+		  running = running -1
+		  running = abs(running)
+		  print(running)
+		  driver.setSpeed(60)
+		  #time.sleep(1)
+		  while (driver.getValuebtnStartStop() != 0):
+			  pass
+	  if running == 0:
+		  driver.setSpeed(0)
+		  driver.setAngle(0)
+	  if running == 1:
+		  # for openni
+		  bgr = np.fromstring(rgb_stream.read_frame().get_buffer_as_uint8(),dtype=np.uint8).reshape(480,640,3)
+		  img = cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB)
+		  #ret,img = cap.read()
+		  #img = cv2.resize(img, (640, 480))
+		  #mask = sign.getMask(img)
+		  #sign.getLowerUpper()
+		  angle = devi.GetDeviation(img)
+		  driver.setAngle(int(-angle))
+		  print(int(-angle))
+		  
+		  if cv2.waitKey(33)& 0xFF == ord('q'):
+			  break
         
   cap.release()
   cv2.destroyAllWindows()

@@ -263,8 +263,11 @@ class DRIVER:
 		return
 	########### FOR MOTOR ###########
 	def openMotor(self):
+		self.pca9865.setAllPWM(0,0)
+		self.pca9865.reset()
+		self.pca9865.setPWMFrequency(60)
 		self.pca9865.setPWM(MOTOR_CHANNEL, 0, NEUTRAL)
-		time.sleep(1)
+		time.sleep(2)
 		return
 	def setSpeed(self, speed):
 		if speed == 0:

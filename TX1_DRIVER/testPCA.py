@@ -30,7 +30,7 @@ pca9865 = pca.PCA9685()
 pca9865.setAllPWM(0,0)
 pca9865.reset()
 pca9865.setPWMFrequency(60)
-pca9865.setPWM(1, 0, 370)
+pca9865.setPWM(0, 0, 370)
 time.sleep(2)
 pca9865.setPWM(1, 0, value)
 

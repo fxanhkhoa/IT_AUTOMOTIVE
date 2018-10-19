@@ -6,14 +6,14 @@ from global_lane import *
 class deviation:
 	
 	y = 150
-	factor = 0.8
+	factor = 1.3
 	
 	def __init__(self):
 		return
 		
 	def GetDeviation(self, img):
 		img_HSV = cv2.cvtColor(img,cv2.COLOR_RGB2HSV)
-		low_threshold= (0,0,240)
+		low_threshold= (0,0,140)
 		high_threshold= (180,255,255)
 		frame_threshold = cv2.inRange(img_HSV,low_threshold,high_threshold)
 		cv2.imshow('frame_threshold',frame_threshold)
@@ -22,25 +22,26 @@ class deviation:
 		
 		imshape = frame_threshold.shape
 		
-		vertices = np.array([[(0.55*imshape[1], 0.6*imshape[0]), \
-							  (imshape[1],imshape[0]),(0,imshape[0]), \
-							  (0.45*imshape[1], 0.6*imshape[0])]], dtype=np.int32)
-		#print vertices
+		vertices = np.array([[(0.8*imshape[1], 0.4*imshape[0]), \
+                          (imshape[1],0.8*imshape[0]),(0,0.8*imshape[0]), \
+                          (0.2*imshape[1], 0.4*imshape[0])]], dtype=np.int32)
+		#print(vertices)
 		img_roi = self.region_of_interest(frame_threshold, vertices)
 		img_transform = self.perspective_transform(img_roi)
 		img_cut = img_transform[int(imshape[0]/2):imshape[0],0:imshape[1]]
 		ret,img_binary = cv2.threshold(img_cut,100,255,cv2.THRESH_BINARY)
 		#cv2.imwrite('a.png',img_cut)
+		cv2.imshow('imgroi', img_roi)
 		#cv2.imshow('cut',img_cut)
 		#cv2.imshow('transform',img_transform)
 		left_fit,right_fit,left_lane_inds, right_lane_inds = self.sliding_window(img_binary)
 		array_left_fitx,array_right_fitx,img_out = self.poly_fit(img_binary,left_fit,right_fit,left_lane_inds, right_lane_inds)
 		middle = (array_left_fitx + array_right_fitx) / 2
 		#print(middle)
-		angle = self.GetAngle(middle[150], img.shape[1]/2)
+		angle = self.GetAngle(middle[100], img.shape[1]/2)
 		print('deviation = ', angle)
-		cv2.circle(img, (int(middle[150]), 450), 5, (0,0,255), -1)
-		cv2.imshow('out_put',img)
+		cv2.circle(img, (int(middle[100]), 450), 5, (0,0,255), -1)
+		#cv2.imshow('out_put',img)
 		
 		return angle
 		
@@ -48,7 +49,7 @@ class deviation:
 		print('hieu so', x-xshape)
 		value = math.atan2((x-xshape), self.y)
 		result = value * 180 / math.pi
-		return result
+		result = result * self.factor
 		return result
 		
 	def sliding_window(self, binary_warped):
@@ -172,7 +173,7 @@ class deviation:
 		#out_img[nonzeroy[left_fitx], nonzerox[left_fitx]] = [0, 0, 255]
 		#k = np.array (left_fitx,dtype=int)
 		#out_img[ploty,k] = [0, 255,0 ]
-		#cv2.imshow('out_img',out_img)
+		cv2.imshow('out_img',out_img)
 		#if(plot):
 			#plt.imshow(out_img)
 			#plt.plot(left_fitx, ploty, color='yellow')
@@ -186,16 +187,16 @@ class deviation:
 	def perspective_transform(self, img):
 		imshape = img.shape
 		#print (imshape)
-		src = np.float32([[(0.55*imshape[1], 0.63*imshape[0]), \
-							(imshape[1],imshape[0]), \
-							(0,imshape[0]), \
-							(.45*imshape[1], 0.63*imshape[0])]])
-		#print (vertices)
+		src = np.float32([[(0.8*imshape[1], 0.4*imshape[0]), \
+							(imshape[1],0.8*imshape[0]), \
+							(0,0.8*imshape[0]), \
+							(0.2*imshape[1], 0.4*imshape[0])]])
+		#print (src)
 		#src= np.float32(vertices)
-		dst = np.float32([[0.75*img.shape[1],0], \
-						[0.75*img.shape[1],img.shape[0]], \
-						[0.25*img.shape[1],img.shape[0]], \
-						[0.25*img.shape[1],0]])
+		dst = np.float32([[0.9*img.shape[1],0.0*imshape[0]], \
+						[1*img.shape[1],0.8*img.shape[0]], \
+						[0*img.shape[1],0.8*img.shape[0]], \
+						[0.1*img.shape[1],0.0*imshape[0]]])
 		#print (dst)
 		M = cv2.getPerspectiveTransform(src, dst)
 		#Minv = cv2.getPerspectiveTransform(dst, src)
