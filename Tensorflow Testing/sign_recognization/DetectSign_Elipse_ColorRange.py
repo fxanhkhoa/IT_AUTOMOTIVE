@@ -7,11 +7,45 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage import io, color, exposure, transform
 
 import os
 
+from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential, model_from_json
+from keras.layers.core import Dense, Dropout, Activation, Flatten
+from keras.layers.convolutional import Conv2D
+from keras.layers.pooling import MaxPooling2D
+
+from keras.optimizers import SGD
+from keras.utils import np_utils
+from keras.callbacks import LearningRateScheduler, ModelCheckpoint
+from keras import backend as K
+K.set_image_data_format('channels_first')
+
 
 # In[2]:
+
+def preprocess_img(img):
+    # Histogram normalization in y
+    hsv = color.rgb2hsv(img)
+    hsv[:,:,2] = exposure.equalize_hist(hsv[:,:,2])
+    img = color.hsv2rgb(hsv)
+
+    # central scrop
+    min_side = min(img.shape[:-1])
+    centre = img.shape[0]//2, img.shape[1]//2
+    img = img[centre[0]-min_side//2:centre[0]+min_side//2,
+              centre[1]-min_side//2:centre[1]+min_side//2,
+              :]
+
+    # rescale to standard size
+    img = transform.resize(img, (IMG_SIZE, IMG_SIZE))
+
+    # roll color axis to axis 0
+    img = np.rollaxis(img,-1)
+
+    return img
 
 
 def getMask(img):
@@ -93,9 +127,9 @@ if len(contours) > 0:
                 pt2 = int(rect[0] + rect[2] // 2 - leng // 2)
                 roi = im_save[pt1:pt1+leng, pt2:pt2+leng]
                 roi = cv2.dilate(roi, (3, 3))
-                plt.imshow(roi)
-                plt.show()
-                #cv2.imshow('roi', roi)
+                #plt.imshow(roi)
+                #plt.show()
+                cv2.imshow('roi', roi)
                 #name_file = str(j) + '.jpg'
                 #cv2.imwrite(os.path.join(path , name_file), roi)
         except:
