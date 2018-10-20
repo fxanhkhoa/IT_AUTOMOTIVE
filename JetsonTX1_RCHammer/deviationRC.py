@@ -31,7 +31,7 @@ class deviation:
 		img_cut = img_transform[int(imshape[0]/2):imshape[0],0:imshape[1]]
 		ret,img_binary = cv2.threshold(img_cut,100,255,cv2.THRESH_BINARY)
 		#cv2.imwrite('a.png',img_cut)
-		cv2.imshow('imgroi', img_roi)
+		#cv2.imshow('imgroi', img_roi)
 		#cv2.imshow('cut',img_cut)
 		#cv2.imshow('transform',img_transform)
 		left_fit,right_fit,left_lane_inds, right_lane_inds = self.sliding_window(img_binary)

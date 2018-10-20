@@ -50,23 +50,26 @@ def main():
 		  running = running -1
 		  running = abs(running)
 		  print(running)
-		  driver.setSpeed(60)
+		  #driver.setSpeed(60)
 		  #time.sleep(1)
 		  while (driver.getValuebtnStartStop() != 0):
 			  pass
 	  if running == 0:
 		  driver.setSpeed(0)
 		  driver.setAngle(0)
+      
 	  if running == 1:
 		  # for openni
 		  bgr = np.fromstring(rgb_stream.read_frame().get_buffer_as_uint8(),dtype=np.uint8).reshape(480,640,3)
 		  img = cv2.cvtColor(bgr,cv2.COLOR_BGR2RGB)
+		  img = cv2.flip( img, 1 )
 		  #ret,img = cap.read()
 		  #img = cv2.resize(img, (640, 480))
 		  #mask = sign.getMask(img)
 		  #sign.getLowerUpper()
 		  angle = devi.GetDeviation(img)
-		  driver.setAngle(int(-angle))
+		  signResult = sign.predict(img)
+		  #driver.setAngle(int(-angle))
 		  print(int(-angle))
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
