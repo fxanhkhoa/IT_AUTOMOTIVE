@@ -247,16 +247,20 @@ class DRIVER:
 	########### FOR SERVO ###########
 		
 	def setAngle(self, angle):
+		if (angle > 30):
+			angle = 30
+		elif (angle < -30):
+			angle = -30
 		if (angle >= 0): #right
 			# calculate percentage
-			percentage = (int)((angle * 100) / 45)
+			percentage = (int)((angle * 100) / 30)
 			value = (int)((85 * percentage) / 100)
 			self.pca9865.setPWM(STEERING_CHANNEL, 0, middle - value)
 			#print(colored(middle - value, 'red'))
 		elif (angle < 0): #left
 			angle = -angle
 			# calculate percentage
-			percentage = (int)((angle * 100) / 45)
+			percentage = (int)((angle * 100) / 30)
 			value = (int)((100 * percentage) / 100)
 			self.pca9865.setPWM(STEERING_CHANNEL, 0, value + middle)
 			#print(colored(middle + value, 'red'))

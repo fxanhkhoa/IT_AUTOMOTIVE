@@ -6,7 +6,7 @@ from global_lane import *
 class deviation:
 	
 	y = 150
-	factor = 1.3
+	factor = 1.2
 	
 	def __init__(self):
 		return
@@ -16,13 +16,13 @@ class deviation:
 		low_threshold= (0,0,140)
 		high_threshold= (180,255,255)
 		frame_threshold = cv2.inRange(img_HSV,low_threshold,high_threshold)
-		cv2.imshow('frame_threshold',frame_threshold)
+		#cv2.imshow('frame_threshold',frame_threshold)
 		#left_fit,right_fit = sliding_window(frame_threshold)
 		#left_fit,right_fit,left_lane_inds, right_lane_inds = sliding_window(frame_threshold)
 		
 		imshape = frame_threshold.shape
 		
-		vertices = np.array([[(0.8*imshape[1], 0.4*imshape[0]), \
+		vertices = np.array([[(0.8*imshape[1],0.4*imshape[0]), \
                           (imshape[1],0.8*imshape[0]),(0,0.8*imshape[0]), \
                           (0.2*imshape[1], 0.4*imshape[0])]], dtype=np.int32)
 		#print(vertices)
@@ -32,16 +32,21 @@ class deviation:
 		ret,img_binary = cv2.threshold(img_cut,100,255,cv2.THRESH_BINARY)
 		#cv2.imwrite('a.png',img_cut)
 		#cv2.imshow('imgroi', img_roi)
-		#cv2.imshow('cut',img_cut)
+		cv2.imshow('cut',img_cut)
 		#cv2.imshow('transform',img_transform)
 		left_fit,right_fit,left_lane_inds, right_lane_inds = self.sliding_window(img_binary)
-		array_left_fitx,array_right_fitx,img_out = self.poly_fit(img_binary,left_fit,right_fit,left_lane_inds, right_lane_inds)
+		array_left_fitx,array_right_fitx,img_out,avr = self.poly_fit(img_binary,left_fit,right_fit,left_lane_inds, right_lane_inds)
+		#mid_left = np.average(left_lane_inds)
+		#mid_right = np.average(right_lane_inds)
+		print(avr)
+		#print(mid_right)
 		middle = (array_left_fitx + array_right_fitx) / 2
 		#print(middle)
 		angle = self.GetAngle(middle[100], img.shape[1]/2)
 		print('deviation = ', angle)
 		cv2.circle(img, (int(middle[100]), 450), 5, (0,0,255), -1)
-		#cv2.imshow('out_put',img)
+		cv2.imshow('out_put',img)
+		cv2.imshow('outimg',img_out)
 		
 		return angle
 		
@@ -165,6 +170,25 @@ class deviation:
 		nonzero = binary_warped.nonzero()
 		nonzeroy = np.array(nonzero[0])
 		nonzerox = np.array(nonzero[1])
+		avr_left = 0
+		countl = 0
+		avr_right = 0
+		countr = 0
+		for x in nonzerox:
+			if (x <= 320):
+				avr_left = avr_left + x
+				countl = countl + 1
+			else:
+				avr_right = avr_right + x
+				countr = countr + 1
+		if (countl > 0):
+			avrl = (avr_left / countl)
+		if (countr > 0):
+			avrr = (avr_right / countr)
+		try:
+			avr = (avrl + avrr) / 2
+		except:
+			avr = 320
 		#print nonzeroy.shape
 		#print left_lane_inds.shape
 		out_img = np.dstack((binary_warped, binary_warped, binary_warped))*255
@@ -173,7 +197,7 @@ class deviation:
 		#out_img[nonzeroy[left_fitx], nonzerox[left_fitx]] = [0, 0, 255]
 		#k = np.array (left_fitx,dtype=int)
 		#out_img[ploty,k] = [0, 255,0 ]
-		cv2.imshow('out_img',out_img)
+		#cv2.imshow('out_img',out_img)
 		#if(plot):
 			#plt.imshow(out_img)
 			#plt.plot(left_fitx, ploty, color='yellow')
@@ -182,7 +206,7 @@ class deviation:
 			#plt.ylim(480, 0)
 			#plt.show()
 
-		return left_fitx,right_fitx,out_img
+		return left_fitx,right_fitx,out_img, avr
 		
 	def perspective_transform(self, img):
 		imshape = img.shape
