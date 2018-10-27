@@ -11,6 +11,8 @@ import driver.driver_Lib as driverLib
 global rgb_stream
 #Frame 640 x 480
 
+out = cv2.VideoWriter('00202_out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 20, (640,480))
+
 def initialize():
 	openni2.initialize()     # can also accept the path of the OpenNI redistribution
 	
@@ -30,7 +32,7 @@ def initialize():
 def main():
   print("Hello World!")
   
-  running = 0
+  running = 1
   
   rgb_stream = initialize()
   devi = deviationRC.deviation()
@@ -50,7 +52,7 @@ def main():
 		  running = running -1
 		  running = abs(running)
 		  print(running)
-		  #driver.setSpeed(60)
+		  driver.setSpeed(60)
 		  #time.sleep(1)
 		  while (driver.getValuebtnStartStop() != 0):
 			  pass
@@ -68,9 +70,10 @@ def main():
 		  #mask = sign.getMask(img)
 		  #sign.getLowerUpper()
 		  angle = devi.GetDeviation(img)
-		  signResult = sign.predict(img)
-		  #driver.setAngle(int(-angle))
-		  print(int(-angle))
+		  #signResult = sign.predict(img)
+		  driver.setAngle(int(-angle))
+		  #driver.setSpeed(60)
+		  #print(int(-angle))
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
 			  break
