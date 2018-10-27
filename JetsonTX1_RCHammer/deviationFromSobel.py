@@ -391,8 +391,13 @@ class deviation:
 		lower = np.uint8([0, 190,   190])
 		upper = np.uint8([160, 255, 255])
 		yellow_mask = cv2.inRange(image, lower, upper)
+		#green color mask
+		lower = np.uint8([0, 140, 30])
+		upper = np.uint8([150, 255, 255])
+		green_mask = cv2.inRange(image, lower, upper)
 		# combine the mask
 		mask = cv2.bitwise_or(white_mask, yellow_mask)
+		mask = cv2.bitwise_or(mask, green_mask)
 		masked = cv2.bitwise_and(image, image, mask = mask)
 
 		gray = cv2.cvtColor(masked, cv2.COLOR_RGB2GRAY)

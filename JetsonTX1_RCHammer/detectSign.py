@@ -24,18 +24,23 @@ IMG_SIZE = 48
 # lower blue = rgb(0, 50, 84)
 
 class Sign:
-	
+
 	def __init__(self):
-		self.model = self.cnn_model()
-		self.model.summary()
-		self.model.load_weights('model.h5')
+		self.model = self.buildModel()
+		print('init done')
+		return
+	
+	def buildModel(self):
+		_model = self.cnn_model()
+		_model.summary()
+		_model.load_weights('model.h5')
 		
 		lr = 0.01
 		self.sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
-		self.model.compile(loss='categorical_crossentropy',
+		_model.compile(loss='categorical_crossentropy',
 			optimizer=self.sgd,
 			metrics=['accuracy'])
-		return
+		return _model
 		
 	def predict(self, img):
 		result = -1
@@ -62,7 +67,7 @@ class Sign:
 					approx = cv2.approxPolyDP(contour,0.01*cv2.arcLength(contour,True),True)
 					#print(area,' ', approx)
 					#this is an ellpise
-					if ((len(approx) > 8) & (area > 30) & (area < 70000) ):
+					if ((len(approx) > 8) & (area > 5000) & (area < 70000) ):
 					#if similarity <= 0.2: # result is not good as approx
 						#print(similarity)
 						#list_ellipse.append(similarity)
@@ -82,11 +87,12 @@ class Sign:
 						output_roi = np.array(output_roi)
 						output_roi = np.expand_dims(output_roi, axis=0)
 						result = self.model.predict_classes(output_roi)
-						
+						print('BIEN BAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO', result)
 						cv2.putText(img, bienbao[int(result)], (rect[0], rect[1]),cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 255), 3)
 
-				except:
-					pass
+				except Exception as e:
+					print(e)
+					#pass
 		#out.write(im)
 		cv2.imshow('signhere', img)
 		return result
