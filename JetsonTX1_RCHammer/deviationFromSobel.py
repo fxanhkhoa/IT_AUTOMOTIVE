@@ -14,9 +14,8 @@ global right_curve
 class deviation:
 
 	y = 150
-	factor = 2
+	factor = 2.2
 	premiddle = 0
-	#fit_left_his = []
 
 	def __init__(self):
 		self.left_fit_his = []
@@ -252,6 +251,7 @@ class deviation:
 			left_fitx = left_fit[0]*ploty**2 + left_fit[1]*ploty + left_fit[2]
 			self.left_fit_his = left_fit
 		else:
+			print(self.left_fit_his)
 			left_fit = self.left_fit_his
 		if (rightx.size > 0):
 		#if (1):
@@ -411,7 +411,8 @@ class deviation:
 		value = math.atan2((x-xshape), self.y)
 		result = value * 180 / math.pi
 		result = result * self.factor
-		
+		if result < 0:
+			result = result + result / 7.5
 		print('goc lech = ', result)
 		return result
 

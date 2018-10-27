@@ -9,6 +9,10 @@ import sys
 #sys.path.append('/driver')
 import driver.driver_Lib as driverLib
 
+import tty
+import termios
+from termcolor import colored
+
 global rgb_stream
 #Frame 640 x 480
 
@@ -30,7 +34,13 @@ def initialize():
 
 def main():
 	print("Hello World!")
-	running = 0
+	
+	#orig_settings = termios.tcgetattr(sys.stdin)
+	
+	#tty.setraw(sys.stdin)
+	x = 0
+	
+	running = 1
 	
 	rgb_stream = initialize()
 	devi = deviationFromSobel.deviation()
@@ -52,7 +62,7 @@ def main():
 		  running = running -1
 		  running = abs(running)
 		  print(running)
-		  driver.setSpeed(60)
+		  driver.setSpeed(80)
 		  #time.sleep(1)
 		  while (driver.getValuebtnStartStop() != 0):
 			  pass
@@ -77,10 +87,29 @@ def main():
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
 			  break
-        
+	  
+	  #if x == ord('q'):
+		  #break
+		
+	#driver.setSpeed(0)
 	cap.release()
 	cv2.destroyAllWindows()
+	#termios.tcsetattr(sys.stdin, termios.TCSADRAIN, orig_settings)
+	
+def stop():
+	driver = driverLib.DRIVER()
+	driver.turnOnLed1()
+	driver.turnOffLed2()
+	driver.turnOnLed3()
+	driver.setAngle(0)
+	driver.setSpeed(0)
+	print(colored('program crash', 'red'))
+	print(colored('stopped motor', 'green'))
+	return
     
 if __name__== "__main__":
-  main()
+  try:
+	  main()
+  except:
+	  stop()
 
