@@ -104,10 +104,10 @@ PCA9685_SLEEP         =   0x10
 PCA9685_INVERT         =  0x10
 
 class PCA9685:
-    kI2Caddress = 0x40
+    kI2Caddress = 0x70
     
     def __init__(self):
-        self.bus = SMBus(1)
+        self.bus = SMBus(0)
         self.bus._set_address(self.kI2Caddress)
         
     def reset(self):

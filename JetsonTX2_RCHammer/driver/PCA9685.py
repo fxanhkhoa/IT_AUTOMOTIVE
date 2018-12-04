@@ -107,7 +107,7 @@ class PCA9685:
     kI2Caddress = 0x40
     
     def __init__(self):
-        self.bus = SMBus(1)
+        self.bus = SMBus(0)
         self.bus._set_address(self.kI2Caddress)
         
     def reset(self):

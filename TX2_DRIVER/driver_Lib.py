@@ -39,14 +39,14 @@ class DRIVER:
 	
 	def __init__(self):
 		self.pca9865 = pca.PCA9685()
-		self.led1 = jet.JETSON_GPIO(10)
-		self.led2 = jet.JETSON_GPIO(9)
-		self.led3 = jet.JETSON_GPIO(36)
+		self.led1 = jet.JETSON_GPIO(393)
+		self.led2 = jet.JETSON_GPIO(394)
+		self.led3 = jet.JETSON_GPIO(297)
 
-		self.btn_start_stop = jet.JETSON_GPIO(187)
-		self.btn_mode = jet.JETSON_GPIO(186)
-		self.btn_speed_plus = jet.JETSON_GPIO(163)
-		self.btn_speed_minus = jet.JETSON_GPIO(511)
+		self.btn_start_stop = jet.JETSON_GPIO(388)
+		self.btn_mode = jet.JETSON_GPIO(298)
+		self.btn_speed_plus = jet.JETSON_GPIO(467)
+		self.btn_speed_minus = jet.JETSON_GPIO(255)
 		
 		self.resetLed1()
 		self.resetLed2()
