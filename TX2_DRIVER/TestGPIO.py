@@ -19,14 +19,14 @@ on = 1
 #gpio184 -> button4
 
 #init led & button
-led1 = jet.JETSON_GPIO(10)
-led2 = jet.JETSON_GPIO(9)
-led3 = jet.JETSON_GPIO(36)
+led1 = jet.JETSON_GPIO(393)
+led2 = jet.JETSON_GPIO(394)
+led3 = jet.JETSON_GPIO(297)
 
-btn1 = jet.JETSON_GPIO(187)
-btn2 = jet.JETSON_GPIO(186)
-btn3 = jet.JETSON_GPIO(163)
-btn4 = jet.JETSON_GPIO(511)
+btn1 = jet.JETSON_GPIO(388)
+btn2 = jet.JETSON_GPIO(298)
+btn3 = jet.JETSON_GPIO(467)
+btn4 = jet.JETSON_GPIO(255)
 
 #unexport
 try:
@@ -79,27 +79,29 @@ while (True):
 		value2 = (int)(btn2.gpioGetValue())
 		value3 = (int)(btn3.gpioGetValue())
 		value4 = (int)(btn4.gpioGetValue())
-		print('3 -> ',btn3.gpioGetValue())
-		#print('4 -> ',btn4.gpioGetValue())
+		#print('1 -> ',btn1.gpioGetValue())
+		#print('2 -> ',btn2.gpioGetValue())
+		#print('3 -> ',btn3.gpioGetValue())
+		print('4 -> ',btn4.gpioGetValue())
 		if (value1 == 1):
-			led1.gpioSetValue(off)
-		else:
 			led1.gpioSetValue(on)
+		else:
+			led1.gpioSetValue(off)
 		
 		if (value2 == 1):
-			led2.gpioSetValue(off)
-		else:
 			led2.gpioSetValue(on)
+		else:
+			led2.gpioSetValue(off)
 			
 		if (value3 == 1):
-			led3.gpioSetValue(off)
-		else:
 			led3.gpioSetValue(on)
+		else:
+			led3.gpioSetValue(off)
 			
-		#if (value4 == 1):
-		#	led3.gpioSetValue(off)
-		#else:
-		#	led3.gpioSetValue(on)
+		if (value4 == 1):
+			led3.gpioSetValue(on)
+		else:
+			led3.gpioSetValue(off)
 			
 	except KeyboardInterrupt:
 		#led1.gpioUnexport()
