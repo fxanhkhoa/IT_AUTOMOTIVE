@@ -138,7 +138,7 @@ model.compile(loss='categorical_crossentropy',
 
 # In[7]:
 bienbao = ['stop','right', 'left', 'another']
-cap = cv2.VideoCapture('00202.avi')
+cap = cv2.VideoCapture('a.mp4')
 out = cv2.VideoWriter('00202_out.avi',cv2.VideoWriter_fourcc('M','J','P','G'), 20, (640,480))
 while(True):
     # Capture frame-by-frame
