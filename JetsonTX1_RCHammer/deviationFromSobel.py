@@ -265,7 +265,7 @@ class deviation:
 		out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 0]
 		out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
 
-		cv2.imshow('sliding window',out_img)
+		#cv2.imshow('sliding window',out_img)
 		#plt.imshow(out_img)
 		#plt.plot(left_fitx, ploty, color='yellow')
 		#plt.plot(right_fitx, ploty, color='yellow')
@@ -322,7 +322,7 @@ class deviation:
 		cv2.fillPoly(window_img, np.int_([right_line_pts]), (0,255, 0))
 		result = cv2.addWeighted(out_img, 1, window_img, 0.3, 0)
 
-		cv2.imshow('skipped, sliding', result)
+		#cv2.imshow('skipped, sliding', result)
 		#plt.imshow(result)
 		#plt.plot(left_fitx, ploty, color='yellow')
 		#plt.plot(right_fitx, ploty, color='yellow')
@@ -450,7 +450,7 @@ class deviation:
 	   
 		# Transforming Perspective
 		binary_warped, Minv = self.warp(combined_binary)
-		cv2.imshow('binary_warped', binary_warped)
+		#cv2.imshow('binary_warped', binary_warped)
 		#compare_plotted_images(image, binary_warped, "Original Image", "Warped Image")
 	  
 		# Getting Histogram

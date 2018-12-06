@@ -14,10 +14,34 @@ import sys
 from termcolor import colored
 
 import _thread, queue
+import threading
 import time
-
-global img
 #Frame 640 x 480
+
+q_img = 0
+
+class detectLane(threading.Thread):
+	def __init__(self, threadID, name, q, q_angle):
+		threading.Thread.__init__(self)
+		self.threadID = threadID
+		self.name = name
+		self.q = q
+		self.q_angle = q_angle
+		self.devi = deviationFromSobel.deviation()
+		return
+      
+	def run(self):
+		cap = cv2.VideoCapture('video_withSign.mp4')
+		while True:
+			ret,image = cap.read()
+			image = cv2.resize(image, (640, 480))
+			angle = self.devi.process_image(image)
+			#cv2.imshow('lane', image)
+			if cv2.waitKey(33)& 0xFF == ord('q'):
+				break
+		cap.release()
+		cv2.destroyAllWindows()
+
 
 def initialize():
 	openni2.initialize()     # can also accept the path of the OpenNI redistribution
@@ -43,39 +67,57 @@ def detect_lane(threadName, q, q_angle):
 	try:
 		while True:
 			img = q.get()
-			angle = devi.process_image(img)
+			#print(img)
+			#angle = devi.process_image(img)
 			#print(int(angle))
-			q_angle.put(int(angle))
-			#cv2.imshow('lane', img)
+			#q_angle.put(int(angle))
+			cv2.imshow('lane', img)
 			if cv2.waitKey(33)& 0xFF == ord('q'):
 				break
 	except:
 		stop()
-		pass
 	return
 
 def detect_sign(threadName, q, q_sign):
 	sign = detectSign.Sign()
-	try:
-		while True:
-			img = q.get()
+	cap = cv2.VideoCapture('video_withSign.mp4')
+	while True:
+		try:
+			ret,image = cap.read()
+			image = cv2.resize(image, (640, 480))
 			#sign_ = q_model.get()
 			result = sign.predict(img)
-			#cv2.imshow('sign', img)
+			#cv2.imshow('sign', image)
 			if cv2.waitKey(33)& 0xFF == ord('q'):
 				break
-	except:
-		stop()
+		except:
+			pass
 	return
 
 def control_thread(threadName, q_angle, q_sign):
 	try:
 		while True:
-			angle = q_angle.get()
-			print(angle)
+			pass
+			#angle = q_angle.get()
+			#print(angle)
 	except:
 		stop()
 	return
+
+def read_image(threadName, q):
+	cap = cv2.VideoCapture('video_withSign.mp4')
+	while True:
+		ret,image = cap.read()
+		image = cv2.resize(image, (640, 480))
+		q.put(image)
+		#q_img = image
+
+		cv2.imshow('in read', image)
+		if cv2.waitKey(33)& 0xFF == ord('q'):
+			break
+	
+	cap.release()
+	cv2.destroyAllWindows()
 
 def main():
 	print("Hello World!")
@@ -83,30 +125,19 @@ def main():
 	#orig_settings = termios.tcgetattr(sys.stdin)
 	
 	#tty.setraw(sys.stdin)
-	x = 0
-	
-	running = 1
 	q = queue.Queue()
 	q_angle = queue.Queue()
+	x = 0
+	thread = detectLane(1, 'lane', q, q_angle)
+	thread.start()
+	running = 1
+	
 	q_sign = queue.Queue() # to set result of sign
-	_thread.start_new_thread(detect_lane, ('lane', q, q_angle, ))
+	#_thread.start_new_thread(read_image, ('read_frame', q, ))
+	#_thread.start_new_thread(detect_lane, ('lane', q, q_angle, ))
 	_thread.start_new_thread(detect_sign, ('sign', q, q_sign))
-	_thread.start_new_thread(control_thread, ('control', q_angle, q_sign, ))
-	cap = cv2.VideoCapture('video_withSign.mp4')
-
-	while True:
-		try:
-			ret,image = cap.read()
-			image = cv2.resize(image, (640, 480))
-			q.put(image)
-			#cv2.imshow('in read', image)
-			if cv2.waitKey(33)& 0xFF == ord('q'):
-				break
-		except:
-			pass
-		
-	cap.release()
-	cv2.destroyAllWindows()
+	#_thread.start_new_thread(control_thread, ('control', q_angle, q_sign, ))
+	
 	#rgb_stream = initialize()
 	#devi2 = deviationRC.deviation()
 	#driver = driverLib.DRIVER()

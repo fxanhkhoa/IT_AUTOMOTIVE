@@ -35,6 +35,7 @@ class Sign:
 		self.model.compile(loss='categorical_crossentropy',
 			optimizer=self.sgd,
 			metrics=['accuracy'])
+		print('init tf done')
 		return
 		
 	def predict(self, img):
@@ -62,7 +63,7 @@ class Sign:
 					approx = cv2.approxPolyDP(contour,0.01*cv2.arcLength(contour,True),True)
 					#print(area,' ', approx)
 					#this is an ellpise
-					if ((len(approx) > 8) & (area > 30) & (area < 70000) ):
+					if ((len(approx) > 8) & (area > 5000) & (area < 70000) ):
 					#if similarity <= 0.2: # result is not good as approx
 						#print(similarity)
 						#list_ellipse.append(similarity)

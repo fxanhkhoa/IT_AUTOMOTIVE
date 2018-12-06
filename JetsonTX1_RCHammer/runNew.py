@@ -4,7 +4,7 @@ from openni import openni2
 from openni import _openni2 as c_api
 import deviationFromSobel
 #import deviationRC
-#import detectSign
+import detectSign
 import sys
 #sys.path.append('/driver')
 import driver.driver_Lib as driverLib
@@ -45,7 +45,7 @@ def main():
 	rgb_stream = initialize()
 	devi = deviationFromSobel.deviation()
 	#devi2 = deviationRC.deviation()
-	#sign = detectSign.Sign()
+	sign = detectSign.Sign()
 	driver = driverLib.DRIVER()
 	driver.turnOnLed1()
 	driver.turnOffLed2()
@@ -62,7 +62,7 @@ def main():
 		  running = running -1
 		  running = abs(running)
 		  print(running)
-		  driver.setSpeed(80)
+		  driver.setSpeed(50)
 		  #time.sleep(1)
 		  while (driver.getValuebtnStartStop() != 0):
 			  pass
@@ -79,11 +79,18 @@ def main():
 		  #img = cv2.resize(img, (640, 480))
 		  #mask = sign.getMask(img)
 		  #sign.getLowerUpper()
-		  angle = devi.process_image(img)
-		  #signResult = sign.predict(img)
-		  driver.setAngle(int(angle))
+		  #angle = devi.process_image(img)
+		  signResult = sign.predict(img)
+		  #driver.setAngle(int(angle))
 		  #driver.setSpeed(0)
-		  print(int(angle))
+		  #print(int(angle))
+		  
+		  if signResult == 1: # right
+			  driver.setAngle(20)
+			  time.sleep(1)
+		  elif signResult == 2: #left
+			  driver.setAngle(-20)
+			  time.sleep(1)
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
 			  break
