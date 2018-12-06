@@ -12,6 +12,7 @@ import driver.driver_Lib as driverLib
 import tty
 import termios
 from termcolor import colored
+import time
 
 global rgb_stream
 #Frame 640 x 480
@@ -40,7 +41,7 @@ def main():
 	#tty.setraw(sys.stdin)
 	x = 0
 	
-	running = 1
+	running = 0
 	
 	rgb_stream = initialize()
 	devi = deviationFromSobel.deviation()
@@ -62,7 +63,7 @@ def main():
 		  running = running -1
 		  running = abs(running)
 		  print(running)
-		  driver.setSpeed(50)
+		  driver.setSpeed(80)
 		  #time.sleep(1)
 		  while (driver.getValuebtnStartStop() != 0):
 			  pass
@@ -80,17 +81,22 @@ def main():
 		  #mask = sign.getMask(img)
 		  #sign.getLowerUpper()
 		  #angle = devi.process_image(img)
-		  signResult = sign.predict(img)
+		  #signResult = sign.predict(img)
 		  #driver.setAngle(int(angle))
 		  #driver.setSpeed(0)
 		  #print(int(angle))
 		  
-		  if signResult == 1: # right
-			  driver.setAngle(20)
-			  time.sleep(1)
-		  elif signResult == 2: #left
-			  driver.setAngle(-20)
-			  time.sleep(1)
+		  driver.setAngle(30)
+		  time.sleep(1)
+		  driver.setAngle(-30)
+		  time.sleep(1)
+		  
+		  #if signResult == 1: # right
+			  #driver.setAngle(20)
+			  #time.sleep(1)
+		  #elif signResult == 2: #left
+			  #driver.setAngle(-20)
+			  #time.sleep(1)
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
 			  break
