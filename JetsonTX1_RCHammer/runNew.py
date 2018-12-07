@@ -63,10 +63,13 @@ def main():
 		  running = running -1
 		  running = abs(running)
 		  print(running)
-		  driver.setSpeed(80)
+		  driver.setSpeed(50)
 		  #time.sleep(1)
 		  while (driver.getValuebtnStartStop() != 0):
 			  pass
+	  if running == 2:
+		  driver.setSpeed(1)
+		  
 	  if running == 0:
 		  driver.setSpeed(0)
 		  driver.setAngle(0)
@@ -80,23 +83,27 @@ def main():
 		  #img = cv2.resize(img, (640, 480))
 		  #mask = sign.getMask(img)
 		  #sign.getLowerUpper()
-		  #angle = devi.process_image(img)
-		  #signResult = sign.predict(img)
-		  #driver.setAngle(int(angle))
+		  angle = devi.process_image(img)
+		  signResult = sign.predict(img)
+		  driver.setAngle(int(angle))
 		  #driver.setSpeed(0)
-		  #print(int(angle))
+		  print(int(angle))
 		  
-		  driver.setAngle(30)
-		  time.sleep(1)
-		  driver.setAngle(-30)
-		  time.sleep(1)
+		  #driver.setAngle(108)
+		  #time.sleep(1)
+		  #driver.setAngle(-30)
+		  #time.sleep(1)
 		  
-		  #if signResult == 1: # right
-			  #driver.setAngle(20)
-			  #time.sleep(1)
-		  #elif signResult == 2: #left
-			  #driver.setAngle(-20)
-			  #time.sleep(1)
+		  if signResult == 1: # right
+			  driver.setAngle(40)
+			  driver.setSpeed(50)
+			  print('right')
+			  time.sleep(3)
+		  elif signResult == 2: #left
+			  driver.setAngle(-30)
+			  driver.setSpeed(50)
+			  print('left')
+			  time.sleep(3)
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
 			  break

@@ -5,16 +5,16 @@ from termcolor import colored
 
 ######## PCA9685 ########
 STEERING_CHANNEL = 3
-MOTOR_CHANNEL = 1
+MOTOR_CHANNEL = 0
 
 # toi 363 min -> 420
 # neutral 332
 # lui 309 min -> 270 max
-MAX_FORWARD = 457
-MIN_FORWARD = 427
+MAX_FORWARD = 395
+MIN_FORWARD = 365
 FORWARD = 30
 
-NEUTRAL = 427
+NEUTRAL = 362
 
 MAX_REVERSE = 370
 MIN_REVERSE = 330

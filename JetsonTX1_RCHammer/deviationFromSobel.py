@@ -14,7 +14,7 @@ global right_curve
 class deviation:
 
 	y = 150
-	factor = 2.2
+	factor = 2.5
 	premiddle = 0
 
 	def __init__(self):
