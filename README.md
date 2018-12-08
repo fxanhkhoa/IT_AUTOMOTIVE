@@ -18,6 +18,10 @@ https://github.com/elmonkey/Python_OpenNI2
 * Install sklearn and skimage
 https://gist.github.com/xydrolase/977979968728c9eb0e48 (With python3 change python-* to python3-*)
 
+## Demo
+* [![One Full Round (No Sign)]](https://www.youtube.com/watch?v=uwkWJDGMpa8 "Demo")
+* [![Demo with Sign]](https://www.youtube.com/watch?v=YKzGS5qxAIQ "Demo")
+
 ## About project
 * Simulation of Automatic car
 * Working on Jetson TX1 with CUDA and Tensorflow
