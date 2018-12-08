@@ -17,6 +17,8 @@ from keras.callbacks import LearningRateScheduler, ModelCheckpoint
 from keras import backend as K
 K.set_image_data_format('channels_first')
 
+import driver.driver_Lib as driverLib
+
 NUM_CLASSES = 4
 IMG_SIZE = 48
 
@@ -26,6 +28,7 @@ IMG_SIZE = 48
 class Sign:
 	
 	def __init__(self):
+		self.driver = driverLib.DRIVER()
 		self.model = self.cnn_model()
 		self.model.summary()
 		self.model.load_weights('model.h5')
@@ -63,6 +66,7 @@ class Sign:
 					#print(area,' ', approx)
 					#this is an ellpise
 					if ((len(approx) > 8) & (area > 30) & (area < 70000) ):
+						self.driver.setSpeed(10)
 					#if similarity <= 0.2: # result is not good as approx
 						#print(similarity)
 						#list_ellipse.append(similarity)

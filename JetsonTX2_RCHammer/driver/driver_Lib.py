@@ -5,20 +5,20 @@ from termcolor import colored
 
 ######## PCA9685 ########
 STEERING_CHANNEL = 0
-MOTOR_CHANNEL = 1
+MOTOR_CHANNEL = 12
 
 # toi 363 min -> 420
 # neutral 332
 # lui 309 min -> 270 max
-MAX_FORWARD = 442
-MIN_FORWARD = 412
-FORWARD = 30
+MAX_FORWARD = 300
+MIN_FORWARD = 380
+FORWARD = 80
 
-NEUTRAL = 400
+NEUTRAL = 385
 
-MAX_REVERSE = 370
-MIN_REVERSE = 330
-REVERSE = 40
+MAX_REVERSE = 490
+MIN_REVERSE = 410
+REVERSE = 80
 
 ####### GPIO ########
 inputPin = 0
@@ -283,12 +283,12 @@ class DRIVER:
 		if speed > 0:
 			#calculate value
 			value = (int)((FORWARD * speed) / 100)
-			self.pca9865.setPWM(MOTOR_CHANNEL, 0, value + MIN_FORWARD)
-			print(colored(value + MIN_FORWARD, 'red'))
+			self.pca9865.setPWM(MOTOR_CHANNEL, 0, MIN_FORWARD - value)
+			print(colored(MIN_FORWARD + value, 'red'))
 		elif speed < 0:
 			#calculate value
 			speed = -speed
 			value = (int)((REVERSE * speed) / 100)
-			self.pca9865.setPWM(MOTOR_CHANNEL, 0, MAX_REVERSE - value)
+			self.pca9865.setPWM(MOTOR_CHANNEL, 0, MIN_REVERSE - value)
 			print(colored(MIN_REVERSE - value, 'red'))
 			

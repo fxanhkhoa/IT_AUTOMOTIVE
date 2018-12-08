@@ -15,7 +15,7 @@ PWM_FULL_REVERSE = 332 # 1ms/20ms * 4096
 PWM_NEUTRAL = 307      # 1.5ms/20ms * 4096
 PWM_FULL_FORWARD = 480 # 2ms/20ms * 4096
 
-value = 436
+value = 380
 
 servoMin = 120 * 2 
 servoMax = 720 / 2
@@ -30,23 +30,23 @@ pca9865 = pca.PCA9685()
 pca9865.setAllPWM(0,0)
 pca9865.reset()
 pca9865.setPWMFrequency(60)
-pca9865.setPWM(0, 0, 370)
-time.sleep(2)
-pca9865.setPWM(1, 0, value)
+#pca9865.setPWM(0, 0, 370)
+time.sleep(1)
+pca9865.setPWM(12, 0, value)
 
 #pca9865.close()
 while (True):
-	pass
+	#pass
 	#pca9865.setPWM(1, 0, value)
 	#time.sleep(.3)
 	#value = value - 1
 	#print(value)
 	#pca9865.setPWM(0, 0, 500)
 	#time.sleep(.8)
-	#value = value - 1
-	#print('pwm', value)
-	#pca9865.setPWM(0, 0, 500)
-	#time.sleep(.8)
+	value = value - 1
+	print('pwm', value)
+	pca9865.setPWM(12, 0, value)
+	time.sleep(.2)
 	#pca9865.setPWM(MOTOR_LEFT_IN1, 0, 0)
 	#pca9865.setPWM(MOTOR_LEFT_IN2, 0, 0)
 
