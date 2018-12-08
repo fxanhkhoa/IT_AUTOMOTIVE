@@ -21,6 +21,7 @@ https://gist.github.com/xydrolase/977979968728c9eb0e48 (With python3 change pyth
 ## About project
 * Simulation of Automatic car
 * Working on Jetson TX1 with CUDA and Tensorflow
+* There are 3 branches for TX1, TX2, and Pipe/ Thread Programing
 
 ## Libraries in project
 - [x] GPIO library in Python
