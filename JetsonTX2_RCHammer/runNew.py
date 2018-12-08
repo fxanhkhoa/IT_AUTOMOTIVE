@@ -47,18 +47,18 @@ def main():
 	devi = deviationFromSobel.deviation()
 	#devi2 = deviationRC.deviation()
 	sign = detectSign.Sign()
-	driver = driverLib.DRIVER()
-	driver.turnOnLed1()
-	driver.turnOffLed2()
-	driver.turnOnLed3()
-	driver.setAngle(0)
-	driver.setSpeed(0)
+	#driver = driverLib.DRIVER()
+	#driver.turnOnLed1()
+	#driver.turnOffLed2()
+	#driver.turnOnLed3()
+	#driver.setAngle(0)
+	#driver.setSpeed(0)
 	print('init done')
   
 	#cap = cv2.VideoCapture('video.mp4')
 	while True:
 	  #print(driver.getValuebtnStartStop())
-	  if (driver.getValuebtnStartStop() == 1):
+	  if (0 == 1):
 		  
 		  running = running -1
 		  running = abs(running)
@@ -84,14 +84,16 @@ def main():
 		  #angle = devi.process_image(img)
 		  signResult = sign.predict(img)
 		  #driver.setAngle(int(angle))
-		  driver.setSpeed(60)
+		  #driver.setSpeed(60)
 		  #print(int(angle))
 		  
 		  if signResult == 1: # right
-			  driver.setAngle(20)
+			  print(colored('right','blue'))
+			  #driver.setAngle(20)
 			  time.sleep(1)
 		  elif signResult == 2: #left
-			  driver.setAngle(-20)
+			  #driver.setAngle(-20)
+			  print(colored('left','blue'))
 			  time.sleep(1)
 		  
 		  if cv2.waitKey(33)& 0xFF == ord('q'):
@@ -106,19 +108,19 @@ def main():
 	#termios.tcsetattr(sys.stdin, termios.TCSADRAIN, orig_settings)
 	
 def stop():
-	driver = driverLib.DRIVER()
-	driver.turnOnLed1()
-	driver.turnOffLed2()
-	driver.turnOnLed3()
-	driver.setAngle(0)
-	driver.setSpeed(0)
+	#driver = driverLib.DRIVER()
+	#driver.turnOnLed1()
+	#driver.turnOffLed2()
+	#driver.turnOnLed3()
+	#driver.setAngle(0)
+	#driver.setSpeed(0)
 	print(colored('program crash', 'red'))
 	print(colored('stopped motor', 'green'))
 	return
     
 if __name__== "__main__":
-  try:
+  #try:
 	  main()
-  except:
-	  stop()
+  #except:
+	  #stop()
 
