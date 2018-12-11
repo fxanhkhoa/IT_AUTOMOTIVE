@@ -1,0 +1,3 @@
+/home/nvidia/driver_in_C++/CMakeFiles/edit_cache.dir
+/home/nvidia/driver_in_C++/CMakeFiles/rebuild_cache.dir
+/home/nvidia/driver_in_C++/CMakeFiles/autocar.dir
