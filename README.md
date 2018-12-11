@@ -2,7 +2,7 @@
 -----
 ## Before use, install these
 * Install I2C DEV for Python
-https://pypi.org/project/i2cdev/
+https://pypi.org/project/i2cdev/ and sudo apt-get install libi2c-dev i2c-tools
 * Install SMBus
 https://pypi.org/project/smbus2/
 * Install tensorflow for Nvidia Jetson TX1 and Nvida Jetson TK1
