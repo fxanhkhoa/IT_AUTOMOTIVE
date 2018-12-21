@@ -17,6 +17,8 @@ from keras.callbacks import LearningRateScheduler, ModelCheckpoint
 from keras import backend as K
 K.set_image_data_format('channels_first')
 
+import driver.driver_Lib as driverLib
+
 NUM_CLASSES = 4
 IMG_SIZE = 48
 
@@ -34,6 +36,10 @@ class Sign:
 		_model = self.cnn_model()
 		_model.summary()
 		_model.load_weights('model.h5')
+		self.driver = driverLib.DRIVER()
+		self.model = self.cnn_model()
+		self.model.summary()
+		self.model.load_weights('model.h5')
 		
 		lr = 0.01
 		self.sgd = SGD(lr=lr, decay=1e-6, momentum=0.9, nesterov=True)
@@ -41,6 +47,9 @@ class Sign:
 			optimizer=self.sgd,
 			metrics=['accuracy'])
 		return _model
+		
+
+
 		
 	def predict(self, img):
 		result = -1
@@ -55,6 +64,7 @@ class Sign:
 		#cv2.imshow('contour', im_contours)
 		list_ellipse = []
 		if len(contours) > 0:
+			
 			for contour in contours:
 				area = cv2.contourArea(contour)
 				if area <= 1000:  # skip ellipses smaller than 10x10
@@ -67,7 +77,9 @@ class Sign:
 					approx = cv2.approxPolyDP(contour,0.01*cv2.arcLength(contour,True),True)
 					#print(area,' ', approx)
 					#this is an ellpise
-					if ((len(approx) > 8) & (area > 5000) & (area < 70000) ):
+
+					if ((len(approx) > 8) & (area > 2000) & (area < 70000) ):
+						self.driver.setSpeed(5)
 					#if similarity <= 0.2: # result is not good as approx
 						#print(similarity)
 						#list_ellipse.append(similarity)

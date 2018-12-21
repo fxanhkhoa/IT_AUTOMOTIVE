@@ -14,7 +14,7 @@ global right_curve
 class deviation:
 
 	y = 150
-	factor = 2.2
+	factor = 2.5
 	premiddle = 0
 
 	def __init__(self):
@@ -265,7 +265,7 @@ class deviation:
 		out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 0]
 		out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 0, 255]
 
-		cv2.imshow('sliding window',out_img)
+		#cv2.imshow('sliding window',out_img)
 		#plt.imshow(out_img)
 		#plt.plot(left_fitx, ploty, color='yellow')
 		#plt.plot(right_fitx, ploty, color='yellow')
@@ -322,7 +322,7 @@ class deviation:
 		cv2.fillPoly(window_img, np.int_([right_line_pts]), (0,255, 0))
 		result = cv2.addWeighted(out_img, 1, window_img, 0.3, 0)
 
-		cv2.imshow('skipped, sliding', result)
+		#cv2.imshow('skipped, sliding', result)
 		#plt.imshow(result)
 		#plt.plot(left_fitx, ploty, color='yellow')
 		#plt.plot(right_fitx, ploty, color='yellow')
@@ -391,13 +391,8 @@ class deviation:
 		lower = np.uint8([0, 190,   190])
 		upper = np.uint8([160, 255, 255])
 		yellow_mask = cv2.inRange(image, lower, upper)
-		#green color mask
-		lower = np.uint8([0, 140, 30])
-		upper = np.uint8([150, 255, 255])
-		green_mask = cv2.inRange(image, lower, upper)
 		# combine the mask
 		mask = cv2.bitwise_or(white_mask, yellow_mask)
-		mask = cv2.bitwise_or(mask, green_mask)
 		masked = cv2.bitwise_and(image, image, mask = mask)
 
 		gray = cv2.cvtColor(masked, cv2.COLOR_RGB2GRAY)
@@ -455,7 +450,7 @@ class deviation:
 	   
 		# Transforming Perspective
 		binary_warped, Minv = self.warp(combined_binary)
-		cv2.imshow('binary_warped', binary_warped)
+		#cv2.imshow('binary_warped', binary_warped)
 		#compare_plotted_images(image, binary_warped, "Original Image", "Warped Image")
 	  
 		# Getting Histogram

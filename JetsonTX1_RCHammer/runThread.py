@@ -20,7 +20,7 @@ import time
 
 q_img = 0
 
-class detectLaneThread(threading.Thread):
+class detectLane(threading.Thread):
 	def __init__(self, threadID, name, q, q_angle):
 		threading.Thread.__init__(self)
 		self.threadID = threadID
@@ -36,30 +36,6 @@ class detectLaneThread(threading.Thread):
 			ret,image = cap.read()
 			image = cv2.resize(image, (640, 480))
 			angle = self.devi.process_image(image)
-			#cv2.imshow('lane', image)
-			if cv2.waitKey(33)& 0xFF == ord('q'):
-				break
-		cap.release()
-		cv2.destroyAllWindows()
-
-class detectSignThread(threading.Thread):
-	def __init__(self, threadID, name, q, q_sign):
-		threading.Thread.__init__(self)
-		self.threadID = threadID
-		self.name = name
-		self.q = q
-		self.q_sign = q_sign
-		#self.sign = detectSign.Sign()
-		return
-      
-	def run(self):
-		self.sign = detectSign.Sign()
-		cap = cv2.VideoCapture('video_withSign.mp4')
-		#self.sign.buildModel()
-		while True:
-			ret,image = cap.read()
-			image = cv2.resize(image, (640, 480))
-			sign_result = self.sign.predict(image)
 			#cv2.imshow('lane', image)
 			if cv2.waitKey(33)& 0xFF == ord('q'):
 				break
@@ -151,17 +127,15 @@ def main():
 	#tty.setraw(sys.stdin)
 	q = queue.Queue()
 	q_angle = queue.Queue()
-	q_sign = queue.Queue() # to set result of sign
 	x = 0
-	threadLane = detectLaneThread(1, 'lane', q, q_angle)
-	threadSign = detectSignThread(2, 'sign', q, q_sign)
-	threadLane.start()
-	threadSign.start()
+	thread = detectLane(1, 'lane', q, q_angle)
+	thread.start()
 	running = 1
 	
+	q_sign = queue.Queue() # to set result of sign
 	#_thread.start_new_thread(read_image, ('read_frame', q, ))
 	#_thread.start_new_thread(detect_lane, ('lane', q, q_angle, ))
-	#_thread.start_new_thread(detect_sign, ('sign', q, q_sign))
+	_thread.start_new_thread(detect_sign, ('sign', q, q_sign))
 	#_thread.start_new_thread(control_thread, ('control', q_angle, q_sign, ))
 	
 	#rgb_stream = initialize()
